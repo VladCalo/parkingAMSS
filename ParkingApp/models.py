@@ -4,8 +4,8 @@ class ParkOwner(models.Model):
     park_owner_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=False)
-    password = models.CharField(max_length=100)  
+    email = models.EmailField(unique=False, default='')
+    password = models.CharField(max_length=100, default='')  
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -15,10 +15,10 @@ class ParkOwner(models.Model):
 
 class Park(models.Model):
     park_id = models.AutoField(primary_key=True)
-    park_owner = models.OneToOneField(ParkOwner, on_delete=models.CASCADE)
+    park_owner = models.ForeignKey(ParkOwner, on_delete=models.CASCADE)
     total_spots = models.IntegerField()
-    no_floors = models.IntegerField()
-    park_details = models.OneToOneField('ParkDetails', on_delete=models.CASCADE)
+    no_floors = models.IntegerField(default=2)
+    park_details = models.ForeignKey('ParkDetails', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Park {self.park_id} - Owned by {self.park_owner}"
